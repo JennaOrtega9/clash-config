@@ -151,6 +151,11 @@ proxy-groups:
   type: select
   proxies: *id001
   icon: https://pbs.twimg.com/profile_images/1985406954198454272/cvh7odtS_400x400.png
+- name: LineTV
+  type: select
+  include-all: true
+  filter: ^(?=.*(?i)(台|🇹🇼|TW|Tai|TPE|TSA|KHH))(?!.*(自动|均衡|策略|故障|默认|DIRECT)).*$
+  icon: https://pbs.twimg.com/profile_images/1241752023042646019/4VxQ_Ka8_400x400.jpg
 - name: Twitch
   type: select
   proxies: *id001
@@ -2238,6 +2243,15 @@ rules:
 - DOMAIN,tv.applemusic.com,Apple TV
 - DOMAIN,uts-api.itunes.apple.com,Apple TV
 - DOMAIN-SUFFIX,tv.apple.com,Apple TV
+# ===== LineTV（台湾）=====
+- DOMAIN-SUFFIX,linetv.tw,LineTV
+- DOMAIN-SUFFIX,line-cdn.net,LineTV
+- DOMAIN-SUFFIX,line-scdn.net,LineTV
+- DOMAIN,d17lx9ucc6k9fc.cloudfront.net,LineTV
+- DOMAIN,d3pgb93pk7bvxj.cloudfront.net,LineTV
+- DOMAIN,d3vm9lcxb6xcm4.cloudfront.net,LineTV
+- DOMAIN-SUFFIX,d3c7rimkq79yfu.cloudfront.net,LineTV
+- DOMAIN-SUFFIX,chocotv.com.tw,LineTV
 - DOMAIN,appldnld.apple.com.edgesuite.net,Apple
 - DOMAIN,apple-events.akamaized.net,Apple
 - DOMAIN,appleworldwidedeveloper.hb-api.omtrdc.net,Apple
