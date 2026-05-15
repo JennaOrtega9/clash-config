@@ -1,0 +1,284 @@
+```yaml
+mixed-port: 7890
+allow-lan: true
+bind-address: "*"
+mode: rule
+log-level: info
+ipv6: true
+unified-delay: true
+tcp-concurrent: true
+
+dns:
+  enable: true
+  ipv6: true
+  enhanced-mode: fake-ip
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  fallback:
+    - https://1.1.1.1/dns-query
+    - https://8.8.8.8/dns-query
+
+proxy-providers:
+  SUB:
+    type: http
+    url: "这里替换成你的机场订阅链接"
+    path: ./providers/sub.yaml
+    interval: 86400
+    health-check:
+      enable: true
+      interval: 600
+      url: https://www.gstatic.com/generate_204
+
+proxy-groups:
+  - name: 节点选择
+    type: select
+    use:
+      - SUB
+
+  - name: 自动选择
+    type: url-test
+    use:
+      - SUB
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+
+  - name: 故障转移
+    type: fallback
+    use:
+      - SUB
+    url: https://www.gstatic.com/generate_204
+    interval: 300
+
+  - name: AI
+    type: select
+    proxies:
+      - 自动选择
+      - 故障转移
+      - 节点选择
+      - DIRECT
+
+  - name: OpenAi
+    type: select
+    proxies:
+      - AI
+      - 自动选择
+      - 节点选择
+
+  - name: Claude
+    type: select
+    proxies:
+      - AI
+      - 自动选择
+      - 节点选择
+
+  - name: Gemini
+    type: select
+    proxies:
+      - AI
+      - 自动选择
+      - 节点选择
+
+  - name: YouTube
+    type: select
+    proxies:
+      - 自动选择
+      - 节点选择
+      - DIRECT
+
+  - name: Netflix
+    type: select
+    proxies:
+      - 自动选择
+      - 节点选择
+      - DIRECT
+
+  - name: Disney
+    type: select
+    proxies:
+      - 自动选择
+      - 节点选择
+      - DIRECT
+
+  - name: Spotify
+    type: select
+    proxies:
+      - 自动选择
+      - 节点选择
+      - DIRECT
+
+  - name: Telegram
+    type: select
+    proxies:
+      - 自动选择
+      - 节点选择
+      - DIRECT
+
+  - name: Twitter
+    type: select
+    proxies:
+      - 自动选择
+      - 节点选择
+      - DIRECT
+
+  - name: Tiktok
+    type: select
+    proxies:
+      - 自动选择
+      - 节点选择
+      - DIRECT
+
+  - name: GitHub
+    type: select
+    proxies:
+      - 自动选择
+      - 节点选择
+      - DIRECT
+
+  - name: Google
+    type: select
+    proxies:
+      - 自动选择
+      - 节点选择
+      - DIRECT
+
+  - name: Microsoft
+    type: select
+    proxies:
+      - 节点选择
+      - DIRECT
+
+  - name: Apple
+    type: select
+    proxies:
+      - DIRECT
+      - 节点选择
+
+  - name: Steam
+    type: select
+    proxies:
+      - DIRECT
+      - 自动选择
+      - 节点选择
+
+  - name: Binance
+    type: select
+    proxies:
+      - 自动选择
+      - 节点选择
+      - DIRECT
+
+  - name: Emby影院
+    type: select
+    proxies:
+      - 自动选择
+      - 节点选择
+      - DIRECT
+
+  - name: SNTP
+    type: select
+    proxies:
+      - 节点选择
+      - DIRECT
+
+  - name: 漏网之鱼
+    type: select
+    proxies:
+      - 自动选择
+      - 故障转移
+      - 节点选择
+      - DIRECT
+
+rules:
+  # Emby
+  - DOMAIN-SUFFIX,cn2gias.uk,Emby影院
+  - DOMAIN-KEYWORD,emby,Emby影院
+
+  # SNTP
+  - DOMAIN-SUFFIX,sntp.uk,SNTP
+  - DOMAIN-SUFFIX,wuyouyun.com,SNTP
+  - DOMAIN-SUFFIX,qzyidc.com,SNTP
+
+  # OpenAI
+  - DOMAIN-SUFFIX,openai.com,OpenAi
+  - DOMAIN-SUFFIX,chatgpt.com,OpenAi
+  - DOMAIN-SUFFIX,oaistatic.com,OpenAi
+  - DOMAIN-SUFFIX,oaiusercontent.com,OpenAi
+
+  # Claude
+  - DOMAIN-SUFFIX,anthropic.com,Claude
+  - DOMAIN-SUFFIX,claude.ai,Claude
+
+  # Gemini
+  - DOMAIN-SUFFIX,gemini.google.com,Gemini
+
+  # AI Tools
+  - DOMAIN-SUFFIX,perplexity.ai,AI
+  - DOMAIN-SUFFIX,cursor.com,AI
+
+  # YouTube
+  - DOMAIN-SUFFIX,youtube.com,YouTube
+  - DOMAIN-SUFFIX,youtu.be,YouTube
+  - DOMAIN-SUFFIX,googlevideo.com,YouTube
+  - DOMAIN-SUFFIX,ytimg.com,YouTube
+
+  # Netflix
+  - DOMAIN-SUFFIX,netflix.com,Netflix
+  - DOMAIN-SUFFIX,netflix.net,Netflix
+  - DOMAIN-SUFFIX,nflxvideo.net,Netflix
+  - DOMAIN-SUFFIX,nflximg.net,Netflix
+
+  # Disney
+  - DOMAIN-SUFFIX,disneyplus.com,Disney
+  - DOMAIN-SUFFIX,bamgrid.com,Disney
+
+  # Spotify
+  - DOMAIN-SUFFIX,spotify.com,Spotify
+  - DOMAIN-SUFFIX,scdn.co,Spotify
+
+  # Telegram
+  - DOMAIN-SUFFIX,telegram.org,Telegram
+  - DOMAIN-SUFFIX,t.me,Telegram
+
+  # Twitter/X
+  - DOMAIN-SUFFIX,x.com,Twitter
+  - DOMAIN-SUFFIX,twitter.com,Twitter
+  - DOMAIN-SUFFIX,twimg.com,Twitter
+
+  # TikTok
+  - DOMAIN-SUFFIX,tiktok.com,Tiktok
+  - DOMAIN-SUFFIX,tiktokcdn.com,Tiktok
+
+  # GitHub
+  - DOMAIN-SUFFIX,github.com,GitHub
+  - DOMAIN-SUFFIX,githubusercontent.com,GitHub
+  - DOMAIN-SUFFIX,githubassets.com,GitHub
+
+  # Google
+  - DOMAIN-SUFFIX,google.com,Google
+  - DOMAIN-SUFFIX,gstatic.com,Google
+  - DOMAIN-SUFFIX,googleapis.com,Google
+  - DOMAIN-SUFFIX,gmail.com,Google
+
+  # Microsoft
+  - DOMAIN-SUFFIX,microsoft.com,Microsoft
+  - DOMAIN-SUFFIX,windowsupdate.com,Microsoft
+
+  # Apple
+  - DOMAIN-SUFFIX,apple.com,Apple
+  - DOMAIN-SUFFIX,icloud.com,Apple
+
+  # Binance
+  - DOMAIN-SUFFIX,binance.com,Binance
+
+  # Steam
+  - DOMAIN-SUFFIX,steampowered.com,Steam
+  - DOMAIN-SUFFIX,steamcommunity.com,Steam
+
+  # China
+  - GEOIP,CN,DIRECT
+
+  # Final
+  - MATCH,漏网之鱼
+```
