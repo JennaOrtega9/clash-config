@@ -409,7 +409,8 @@ proxy-groups:
     type: select
     proxies:
       - "$app_name"
-      - DIRECTrules:
+      - DIRECT
+rules:
   # AI 聚合补充：OpenAI、Claude、Gemini、Copilot、Perplexity、Cursor、Grok、Poe、DeepSeek 等
   - DOMAIN-SUFFIX,openai.com,AI
   - DOMAIN-SUFFIX,chatgpt.com,AI
